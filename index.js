@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +12,8 @@ app.use(express.json());
 // Route για το POST αίτημα από το contact form
 app.post('/contact', async (req, res) => {
   const { firstName, lastName, email, phone, message } = req.body;
+
+  console.log(req.body)
 
   try {
     const transporter = nodemailer.createTransport({
@@ -21,6 +23,9 @@ app.post('/contact', async (req, res) => {
         pass: process.env.EMAIL_PASS
       }
     });
+
+    console.log('process.env.EMAIL_USER', process.env.EMAIL_USER);
+    console.log('process.env.EMAIL_PASS', process.env.EMAIL_PASS);
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -41,7 +46,15 @@ app.post('/contact', async (req, res) => {
   }
 });
 
+app.get('/health', async (req, res) => {
+
+    res.status(200).json({ message: 'All good!' });
+
+});
+
+
 // Start the server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
-});
+    // console.log(`✅ Server is running on http://localhost:${PORT}`);
+    // console.log('👉 Η πραγματική PORT που χρησιμοποιείται:', PORT);
+  });
