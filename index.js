@@ -4,9 +4,14 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://manioudakiscompany.gr"
+  ]
+}));
 app.use(express.json());
 
 // Route για το POST αίτημα από το contact form
@@ -55,6 +60,5 @@ app.get('/health', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-    // console.log(`✅ Server is running on http://localhost:${PORT}`);
-    // console.log('👉 Η πραγματική PORT που χρησιμοποιείται:', PORT);
-  });
+  console.log(`Server running on port ${PORT}`);
+});
